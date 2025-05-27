@@ -1,0 +1,22 @@
+After=network-online.target
+
+[Service]
+User=root
+Group=root
+Type=simple
+ExecStart=/usr/local/bin/grafana server \
+    --config=/etc/grafana/grafana.ini \
+    --homepath=/usr/share/grafana \
+    --packaging=deb \
+    cfg:default.paths.logs=/var/log/grafana \
+    cfg:default.paths.data=/var/lib/grafana \
+    cfg:default.paths.plugins=/var/lib/grafana/plugins \
+    cfg:default.paths.provisioning=/etc/grafana/provisioning
+
+Restart=on-failure
+LimitNOFILE=10000
+TimeoutStopSec=20
+SyslogIdentifier=grafana
+
+[Install]
+WantedBy=multi-user.target
